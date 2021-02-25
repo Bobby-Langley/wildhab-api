@@ -7,10 +7,10 @@ if (!admin.apps.length) {
   });
 }
 const firestore = admin.firestore();
-const peopleRef = firestore.collection("people");
+const userRef = firestore.collection("people");
 
 
-exports.postPerson = (req, res) => {
+exports.postUsers = (req, res) => {
   if (!firestore) {
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
@@ -36,19 +36,19 @@ if(typeof req.body.name !== 'string'){
     })
     return
 }
-  let newPerson = req.body;
+  let newUser = req.body;
   let now = admin.firestore.FieldValue.serverTimestamp();
-  newPerson.updated = now;
-  newPerson.created = now;
+  newUser.updated = now;
+  newUser.created = now;
 
-  peopleRef
-    .add(newPerson)
+  userRef
+    .add(newUser)
     .then((docRef) => {
-      peopleRef
+      userRef
         .doc(docRef.id)
         .get()
         .then((snapshot) => {
-          let person = snapshot.data({
+          let user = snapshot.data({
             name: "17",
           });
           if ( (req.body.first_name && (req.body.first_name).length === 0) ||
@@ -61,11 +61,11 @@ if(typeof req.body.name !== 'string'){
             return;
           }
 
-          person.id = snapshot.id;
+          user.id = snapshot.id;
           res.status(200).json({
             status: "successfully successful success",
-            data: person,
-            message: "Person added",
+            data: user,
+            message: "User added",
             statusCode: "200",
           });
           return;
@@ -82,24 +82,24 @@ if(typeof req.body.name !== 'string'){
     });
 };
 
-exports.getPeople = (req, res) => {
+exports.getUser = (req, res) => {
   if (!firestore) {
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
     });
   }
-  peopleRef
+  userRef
     .get()
     .then((collection) => {
-      const peopleResults = collection.docs.map((doc) => {
-        let person = doc.data();
-        person.id = doc.id;
-        return person;
+      const userResults = collection.docs.map((doc) => {
+        let user = doc.data();
+        user.id = doc.id;
+        return user;
       });
       res.status(200).json({
         status: "successfully successful success",
-        data: peopleResults,
-        message: "Person loaded",
+        data: userResults,
+        message: "User loaded",
         statusCode: "200",
       });
     })

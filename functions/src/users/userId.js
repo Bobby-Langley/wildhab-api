@@ -7,7 +7,7 @@ if(!admin.apps.length) {
   })
 }  
 const firestore = admin.firestore()
-const personRef = firestore.collection('people')
+const userRef = firestore.collection('people')
 
 exports.getSingleUser = (req, res) => {
     if(!firestore) {
@@ -17,14 +17,14 @@ exports.getSingleUser = (req, res) => {
         firestore = admin.firestore()
     }
 const { userId } = req.params 
-     personRef.doc(userId).get()
+     userRef.doc(userId).get()
           .then( doc => {
-            let person = doc.data()
-            person.id = doc.id
+            let user = doc.data()
+            user.id = doc.id
               res.status(200).json({
                   status: 'successfully successful success',
-                  data: person,
-                  message: 'person loaded',
+                  data: user,
+                  message: 'user loaded',
                   statusCode: '200'
                 })
             })
@@ -40,7 +40,7 @@ const { userId } = req.params
      }
 
 
-exports.deleteSinglePerson = (req, res) => {
+exports.deleteSingleUser = (req, res) => {
   if(!firestore) {
       admin.initializeApp({
           credential: admin.credential.cert(serviceAccount)
@@ -48,11 +48,11 @@ exports.deleteSinglePerson = (req, res) => {
       firestore = admin.firestore()
   }
   
-  personRef.doc(req.params.userId).delete()
+  UserRef.doc(req.params.userId).delete()
       .then(() => {
           res.status(200).json({
             status: 'successfully successful success',
-            message: 'Person deleted',
+            message: 'User deleted',
             statusCode: '204'
           })
       })
@@ -66,19 +66,19 @@ exports.deleteSinglePerson = (req, res) => {
       })
 }
 
-exports.updateSinglePerson = (req, res) => {
+exports.updateSingleUser = (req, res) => {
   if(!firestore) {
       admin.initializeApp({
           credential: admin.credential.cert(serviceAccount)
       })
       firestore = admin.firestore()
   }
-  personRef.doc(req.params.userId)
+  UserRef.doc(req.params.userId)
   .update(req.body)
       .then(() => {
           res.status(200).json({
-            status: 'Person updated successfully',
-            message: 'Person updated',
+            status: 'User updated successfully',
+            message: 'User updated',
             statusCode: '200'
           })
           return

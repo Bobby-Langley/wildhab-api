@@ -54,7 +54,7 @@ exports.deleteEvent = (req, res) => {
         .then(() => {
             res.status(200).json({
             status: 'successfully successful success',
-            message: 'Events loaded',
+            message: 'Event deleted',
             statusCode: '204'
             })
         })
@@ -80,7 +80,7 @@ exports.updateEvent = (req, res) => {
     .update({
         sport: "disc disc disc",
         rated: "M for mature",
-        "Weather Forecast": "Who cares?"
+        WeatherForecast: "Who cares?"
     })
         .then(() => {
             res.status(200).json({

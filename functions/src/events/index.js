@@ -59,7 +59,6 @@ exports.postEvent = (req, res) => {
                 .then(snapshot => {
                     let event = snapshot.data()
                     event.id = snapshot.id
-                    res.set('Cache-Control', 'public, max-age=300, s-maxage=600')
                     res.status(200).json({
                         status: 'successfully successful success',
                         data: event,
